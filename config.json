@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "Татуировка",
-      "price": "от 3 000 ₽",
+      "price": "",
       "photo": ""
     },
     {
@@ -21,9 +21,9 @@
       "photo": ""
     },
     {
-      "name": "Тест-услуга",
-      "price": "999 ₽",
-      "photo": "img/u1794740729341-0.jpg"
+      "name": "Эскиз / консультация",
+      "price": "",
+      "photo": ""
     }
   ],
   "photos": [
@@ -31,7 +31,7 @@
     "img/2.jpg",
     "img/3.jpg",
     "img/4.jpg",
-    "img/u1794740729968-0.jpg"
+    "img/5.jpg"
   ],
   "contacts": {
     "phone": "+79649484088",
