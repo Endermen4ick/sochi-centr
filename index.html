@@ -175,6 +175,11 @@ section{padding-block:clamp(80px,12vw,160px)}
 .ya iframe{display:block;width:100%;height:100%;border:0}
 .src-note{margin-top:14px;font-size:.85rem;color:var(--muted)}
 .hours{margin-top:10px;font-weight:600}
+.plist{list-style:none;margin:0 0 28px;padding:0;max-width:820px;border-top:1px solid var(--line-d)}
+.plist[hidden]{display:none}
+.plist li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-d);font-size:1.08rem;font-weight:600}
+.plist b{font-family:var(--serif);font-weight:600;white-space:nowrap;color:var(--gold)}
+.plist b.ask{font-family:var(--sans);font-size:.9rem;font-weight:500;color:var(--muted-d)}
 .ok{grid-column:1/-1;color:var(--gold);font-size:.95rem;min-height:1.4em}
 @media (min-width:900px){.bron{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px;align-items:start}}
 
@@ -281,7 +286,7 @@ body{background:var(--bg)}
 <main>
 <section class="w statement"><p class="kicker">О месте</p><p id="statement"><span class="sw">Салон</span> <span class="sw">на</span> <span class="sw">улице</span> <span class="sw">Чайковского,</span> <span class="sw">7/2</span> <span class="sw">(цокольный</span> <span class="sw">этаж).</span> <span class="sw">Здесь</span> <span class="sw">делают</span> <span class="sw">татуировки,</span> <span class="sw">пирсинг</span> <span class="sw">и</span> <span class="sw">татуаж,</span> <span class="sw">удаляют</span> <span class="sw">работы</span> <span class="sw">лазером,</span> <span class="sw">есть</span> <span class="sw">эскизы.</span></p></section>
 <section class="gal" id="gal" style="padding-top:0"><div class="rail" id="rail"><figure class="clip"><img class="" src="img/1.jpg" alt="Сочи-центр, фото 1" loading="eager" decoding="async"></figure><figure class="clip"><img class="" src="img/2.jpg" alt="Сочи-центр, фото 2" loading="lazy" decoding="async"></figure><figure class="clip"><img class="" src="img/3.jpg" alt="Сочи-центр, фото 3" loading="lazy" decoding="async"></figure><figure class="clip"><img class="" src="img/4.jpg" alt="Сочи-центр, фото 4" loading="lazy" decoding="async"></figure><figure class="clip"><img class="" src="img/5.jpg" alt="Сочи-центр, фото 5" loading="lazy" decoding="async"></figure></div></section>
-<section class="light" id="prices"><div class="w"><p class="kicker">Прайс</p><h2 class="rise">Цены</h2><p class="lead">Точная стоимость зависит от эскиза, размера и места на теле, уточняйте по телефону, в Telegram или в WhatsApp.</p><div class="btns" style="margin-top:24px"><a class="btn main" href="https://t.me/Tattoosochicentr" target="_blank" rel="noopener">Узнать цену в Telegram</a><a class="btn" href="https://wa.me/79649484088?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9F%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%2C%20%D0%BF%D0%BE%D0%B6%D0%B0%D0%BB%D1%83%D0%B9%D1%81%D1%82%D0%B0%2C%20%D1%86%D0%B5%D0%BD%D1%8B%20%D0%B8%20%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5%20%D0%B2%D1%80%D0%B5%D0%BC%D1%8F%20%D0%B2%20%D0%A1%D0%BE%D1%87%D0%B8-%D1%86%D0%B5%D0%BD%D1%82%D1%80." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+79649484088">Позвонить</a></div></div></section>
+<section class="light" id="prices"><div class="w"><p class="kicker">Прайс</p><h2 class="rise">Цены</h2><ul class="plist" data-cfg="prices" hidden></ul><p class="lead">Точная стоимость зависит от эскиза, размера и места на теле, уточняйте по телефону, в Telegram или в WhatsApp.</p><div class="btns" style="margin-top:24px"><a class="btn main" href="https://t.me/Tattoosochicentr" target="_blank" rel="noopener">Узнать цену в Telegram</a><a class="btn" href="https://wa.me/79649484088?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9F%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%2C%20%D0%BF%D0%BE%D0%B6%D0%B0%D0%BB%D1%83%D0%B9%D1%81%D1%82%D0%B0%2C%20%D1%86%D0%B5%D0%BD%D1%8B%20%D0%B8%20%D1%81%D0%B2%D0%BE%D0%B1%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5%20%D0%B2%D1%80%D0%B5%D0%BC%D1%8F%20%D0%B2%20%D0%A1%D0%BE%D1%87%D0%B8-%D1%86%D0%B5%D0%BD%D1%82%D1%80." target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+79649484088">Позвонить</a></div></div></section>
 <section class="w" id="bron"><div class="bron rise"><div><p class="kicker">Запись</p><h2>Записаться <em>на сеанс</em></h2><p class="lead">Оставьте имя, телефон, услугу и удобное время. Нажмите «Записаться» — откроется наш Telegram с готовой заявкой, останется нажать «Отправить». Мы ответим и подтвердим запись.</p></div>
 <form id="bf" novalidate autocomplete="on">
 <label class="fm">Ваше имя<input name="name" required maxlength="60" autocomplete="name" placeholder="Как к вам обращаться"></label>
@@ -297,7 +302,7 @@ body{background:var(--bg)}
 <p class="ok" id="ok" aria-live="polite"></p>
 <div class="alt" id="alt" hidden><a class="btn" data-cfg-href="tg" href="https://t.me/Tattoosochicentr" target="_blank" rel="noopener">Написать в Telegram</a><a class="btn" data-cfg-href="wa" href="https://wa.me/79649484088" target="_blank" rel="noopener">WhatsApp</a></div>
 </form></div></section>
-<section class="light"><div class="w"><p class="kicker">Услуги</p><h2 class="rise">Что <em>делаем</em></h2><ul class="inside"><li class="pop">Татуировка</li><li class="pop">Пирсинг</li><li class="pop">Удаление лазером</li><li class="pop">Татуаж</li><li class="pop">Эскизы</li></ul></div></section>
+<section class="light"><div class="w"><p class="kicker">Услуги</p><h2 class="rise">Что <em>делаем</em></h2><ul class="inside" data-cfg="servicesList"><li class="pop">Татуировка</li><li class="pop">Пирсинг</li><li class="pop">Удаление лазером</li><li class="pop">Татуаж</li><li class="pop">Эскизы</li></ul></div></section>
 <section class="w"><p class="kicker">Клиенты о нас</p><h2 class="rise">За что <em>хвалят</em></h2><ul class="praise"><li class="rise">Подскажут с выбором</li><li class="rise">Исправят неудачный прокол</li><li class="rise">Приятные мастера</li></ul></section>
 <section class="w" id="otzyvy" style="padding-top:0"><h2 class="rise">Отзывы</h2>
   <div class="rating"><b>★ <span data-cfg="rating">5.0</span></b><span data-cfg="ratingCount">155 оценок и 131 отзыв на Яндекс Картах</span></div>
@@ -368,40 +373,67 @@ if(tr){var loop=gsap.to(tr,{xPercent:-50,repeat:-1,duration:36,ease:'none'});Scr
 addEventListener('load',function(){ScrollTrigger.refresh()});
 });</script>
 <script>(function(){
-var CFG=null;
+var CFG={};
 var f=document.getElementById('bf');
-var ok=document.getElementById('ok'),alt=document.getElementById('alt'),btn=document.getElementById('bsend');
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+var ok=document.getElementById('ok'),alt=document.getElementById('alt');
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function all(sel){return [].slice.call(document.querySelectorAll(sel))}
 function plural(n,a,b,c){n=Math.abs(n)%100;var m=n%10;if(n>10&&n<20)return c;if(m>1&&m<5)return b;if(m===1)return a;return c}
+function svcList(c){return (c.services||[]).map(function(s){return typeof s==='string'?{name:s,price:''}:s}).filter(function(s){return s&&s.name})}
 
 function slots(from,to,step){
   var sel=f&&f.elements.t;if(!sel)return;
   var p=function(s){var a=String(s||'').split(':');return (+a[0]||0)*60+(+a[1]||0)};
-  var a=p(from||'10:00'),b=p(to||'22:00'),st=Math.max(10,+step||30),keep=sel.value,html='';
+  var a=p(from||'10:00'),b=p(to||'22:00'),st=Math.max(10,+step||30),keep=sel.value||'14:00',html='';
   if(b<=a)b+=24*60;
   for(var m=a;m<=b;m+=st){var x=m%(24*60),v=String(Math.floor(x/60)).padStart(2,'0')+':'+String(x%60).padStart(2,'0');html+='<option'+(v===keep?' selected':'')+'>'+v+'</option>'}
   sel.innerHTML=html;
-  if(!keep){var mid=[].slice.call(sel.options).find(function(o){return o.value==='14:00'});if(mid)mid.selected=true}
+}
+
+function photos(list){
+  if(!list||!list.length)return;
+  var alt_=document.querySelector('.brand');var nm=alt_?alt_.textContent:'';
+  // Карточки на первом экране: первые три фото
+  all('.stack .card img').forEach(function(img,i){if(list[i])img.src=list[i]});
+  // Фон финального блока: второе фото (или первое)
+  var fi=document.querySelector('#finalimg img');if(fi)fi.src=list[1]||list[0];
+  // Галерея: все фото по порядку
+  var rail=document.getElementById('rail');if(!rail)return;
+  var figs=all('#rail figure');
+  list.forEach(function(src,i){
+    var fig=figs[i];
+    if(!fig){fig=document.createElement('figure');fig.className='clip';fig.innerHTML='<img loading="lazy" decoding="async" alt="">';rail.appendChild(fig)}
+    var im=fig.querySelector('img');im.src=src;im.alt=nm+', фото '+(i+1);
+  });
+  figs.slice(list.length).forEach(function(x){x.remove()});
+  if(window.ScrollTrigger)setTimeout(function(){ScrollTrigger.refresh()},300);
 }
 
 function apply(c){
-  CFG=c;
-  var r=c.rating||{};
+  CFG=c||{};
+  var r=CFG.rating||{};
   if(r.value){all('[data-cfg="rating"]').forEach(function(e){e.textContent=r.value})}
   if(r.ratings){
     all('[data-cfg="ratingCountShort"]').forEach(function(e){e.textContent=r.ratings+' '+plural(r.ratings,'оценка','оценки','оценок')+' · Яндекс Карты'});
     all('[data-cfg="ratingCount"]').forEach(function(e){e.textContent=r.ratings+' '+plural(r.ratings,'оценка','оценки','оценок')+(r.reviews?' и '+r.reviews+' '+plural(r.reviews,'отзыв','отзыва','отзывов'):'')+' на Яндекс Картах'});
   }
-  if(c.reviews&&c.reviews.length){all('[data-cfg="reviews"]').forEach(function(ul){ul.innerHTML=c.reviews.filter(Boolean).map(function(t){return '<li>'+esc(t)+'</li>'}).join('')})}
-  if(c.hours){all('[data-cfg="hours"]').forEach(function(e){e.textContent=c.hours})}
-  if(c.services&&c.services.length&&f){var s=f.elements.s,v=s.value;s.innerHTML=c.services.filter(Boolean).map(function(x){return '<option'+(x===v?' selected':'')+'>'+esc(x)+'</option>'}).join('')}
-  var sl=c.slots||{};slots(sl.from,sl.to,sl.step);
-  var ct=c.contacts||{};
+  if(CFG.reviews&&CFG.reviews.length){all('[data-cfg="reviews"]').forEach(function(ul){ul.innerHTML=CFG.reviews.filter(Boolean).map(function(t){return '<li>'+esc(t)+'</li>'}).join('')})}
+  if(CFG.hours){all('[data-cfg="hours"]').forEach(function(e){e.textContent=CFG.hours})}
+
+  var sv=svcList(CFG);
+  if(sv.length){
+    all('[data-cfg="prices"]').forEach(function(ul){ul.innerHTML=sv.map(function(s){return '<li><span>'+esc(s.name)+'</span><b'+(s.price?'':' class="ask"')+'>'+esc(s.price||'цену уточняйте')+'</b></li>'}).join('');ul.hidden=false});
+    all('[data-cfg="servicesList"]').forEach(function(ul){ul.innerHTML=sv.map(function(s){return '<li>'+esc(s.name)+'</li>'}).join('')});
+    var tr=document.getElementById('track');if(tr){var one=sv.map(function(s){return '<span>'+esc(s.name)+'</span>'}).join('');tr.innerHTML=one+one+one+one}
+    if(f){var sel=f.elements.s,v=sel.value;sel.innerHTML=sv.map(function(s){return '<option value="'+esc(s.name)+'"'+(s.name===v?' selected':'')+'>'+esc(s.name)+(s.price?' — '+esc(s.price):'')+'</option>'}).join('')}
+  }
+  photos(CFG.photos);
+  var sl=CFG.slots||{};slots(sl.from,sl.to,sl.step);
+  var ct=CFG.contacts||{};
   if(ct.telegram){all('a[href^="https://t.me/"]').forEach(function(a){a.href='https://t.me/'+ct.telegram.replace(/^@/,'')})}
   if(ct.whatsapp){all('a[href^="https://wa.me/"]').forEach(function(a){var q=a.href.indexOf('?');a.href='https://wa.me/'+ct.whatsapp.replace(/\D/g,'')+(q>-1?a.href.slice(q):'')})}
   if(ct.phone){var tel=ct.phone.replace(/[^\d+]/g,'');all('a[href^="tel:"]').forEach(function(a){if(a.textContent.replace(/[^\d+]/g,'').length>6)a.textContent=ct.phone;a.href='tel:'+tel})}
-  var d=document.getElementById('demo');if(d)d.hidden=c.demo===false;
+  var d=document.getElementById('demo');if(d)d.hidden=CFG.demo===false;
 }
 
 slots();
@@ -422,50 +454,23 @@ f.addEventListener('submit',function(e){
   el.name.classList.toggle('bad',!name);el.phone.classList.toggle('bad',!phoneOk(phone));
   if(!name||!phoneOk(phone)){ok.className='ok err';ok.textContent='Укажите имя и телефон, чтобы мы могли с вами связаться.';(name?el.phone:el.name).focus();return}
   var dt=d.value?new Date(d.value+'T00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',weekday:'long'}):'не выбран';
-  var tg=(CFG&&CFG.telegram)||{},token=(tg.botToken||'').trim(),ids=String(tg.chatIds||'').split(/[\s,;]+/).filter(Boolean);
-  var text='🔔 <b>Новая заявка с сайта</b>\n\n'+
-    '👤 <b>Имя:</b> '+esc(name)+'\n'+
-    '📞 <b>Телефон:</b> '+esc(phone)+'\n'+
-    '✒️ <b>Услуга:</b> '+esc(el.s.value)+'\n'+
-    '📅 <b>День:</b> '+esc(dt)+'\n'+
-    '🕐 <b>Время:</b> '+esc(el.t.value)+'\n'+
-    '💬 <b>Связаться:</b> '+esc(el.via.value)+'\n'+
-    (el.c.value.trim()?'📝 <b>Комментарий:</b> '+esc(el.c.value.trim())+'\n':'')+
-    '\n<i>Отправлено '+new Date().toLocaleString('ru-RU',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})+'</i>';
-  var plain='Здравствуйте! Заявка на запись с сайта:\n'+
-    '👤 Имя: '+name+'\n'+
-    '📞 Телефон: '+phone+'\n'+
-    '✒️ Услуга: '+el.s.value+'\n'+
-    '📅 День: '+dt+'\n'+
-    '🕐 Время: '+el.t.value+'\n'+
-    '💬 Связаться: '+el.via.value+
-    (el.c.value.trim()?'\n📝 Комментарий: '+el.c.value.trim():'');
-  var tgUser=(((CFG&&CFG.contacts)||{}).telegram||'Tattoosochicentr').replace(/^@/,'');
-  function viaChat(){
-    if(navigator.clipboard)navigator.clipboard.writeText(plain).catch(function(){});
-    var url='https://t.me/'+tgUser+'?text='+encodeURIComponent(plain);
-    var w=window.open(url,'_blank','noopener');if(!w)location.href=url;
-    ok.className='ok';ok.textContent='Открываем Telegram: заявка уже в поле сообщения — нажмите «Отправить». Если текста нет, вставьте его — он скопирован.';
-    alt.hidden=false;var wa=alt.querySelector('[data-cfg-href="wa"]');if(wa)wa.href=wa.href.split('?')[0]+'?text='+encodeURIComponent(plain);
-    var tl=alt.querySelector('[data-cfg-href="tg"]');if(tl)tl.href=url;
-  }
-  if(!token||!ids.length){viaChat();return}
-  function fail(){
-    ok.className='ok err';ok.textContent='Не получилось отправить заявку автоматически. Напишите нам — текст заявки уже скопирован.';
-    alt.hidden=false;var w=alt.querySelector('[data-cfg-href="wa"]');if(w)w.href=w.href.split('?')[0]+'?text='+encodeURIComponent(plain);
-    if(navigator.clipboard)navigator.clipboard.writeText(plain).catch(function(){});
-    btn.disabled=false;btn.textContent='Записаться';
-  }
-  btn.disabled=true;btn.textContent='Отправляем…';ok.className='ok';ok.textContent='';alt.hidden=true;
-  Promise.all(ids.map(function(id){
-    var b=new URLSearchParams();b.set('chat_id',id);b.set('text',text);b.set('parse_mode','HTML');b.set('disable_web_page_preview','true');
-    return fetch('https://api.telegram.org/bot'+token+'/sendMessage',{method:'POST',body:b}).then(function(r){return r.json()}).then(function(j){return !!j.ok}).catch(function(){return false});
-  })).then(function(res){
-    if(res.some(Boolean)){
-      ok.className='ok';ok.textContent='Спасибо, '+name+'! Заявка отправлена мастеру. Мы свяжемся с вами, чтобы подтвердить время.';
-      f.reset();d.value=iso(t);btn.disabled=false;btn.textContent='Записаться';
-    }else fail();
-  });
+  var svc=svcList(CFG).find(function(s){return s.name===el.s.value});
+  var text='Здравствуйте! Заявка на запись с сайта.\n'+
+    'Имя: '+name+'\n'+
+    'Телефон: '+phone+'\n'+
+    'Услуга: '+el.s.value+(svc&&svc.price?' ('+svc.price+')':'')+'\n'+
+    'День: '+dt+'\n'+
+    'Время: '+el.t.value+'\n'+
+    'Как связаться: '+el.via.value+
+    (el.c.value.trim()?'\nКомментарий: '+el.c.value.trim():'');
+  var tgUser=((CFG.contacts||{}).telegram||'Tattoosochicentr').replace(/^@/,'');
+  if(navigator.clipboard)navigator.clipboard.writeText(text).catch(function(){});
+  var url='https://t.me/'+tgUser+'?text='+encodeURIComponent(text);
+  var w=window.open(url,'_blank');if(w){try{w.opener=null}catch(_){}}else location.href=url;
+  ok.className='ok';ok.textContent='Открываем Telegram: заявка уже в поле сообщения, нажмите «Отправить». Если поле пустое, вставьте текст — он скопирован.';
+  alt.hidden=false;
+  var wa=alt.querySelector('[data-cfg-href="wa"]');if(wa)wa.href=wa.href.split('?')[0]+'?text='+encodeURIComponent(text);
+  var tl=alt.querySelector('[data-cfg-href="tg"]');if(tl)tl.href=url;
 });
 })();
 </script>

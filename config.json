@@ -1,15 +1,18 @@
 {
-  "telegram": {
-    "botToken": "",
-    "chatIds": ""
-  },
+  "services": [
+    { "name": "Татуировка", "price": "" },
+    { "name": "Пирсинг", "price": "" },
+    { "name": "Удаление лазером", "price": "" },
+    { "name": "Татуаж", "price": "" },
+    { "name": "Эскиз / консультация", "price": "" }
+  ],
+  "photos": ["img/1.jpg", "img/2.jpg", "img/3.jpg", "img/4.jpg", "img/5.jpg"],
   "contacts": {
     "phone": "+79649484088",
     "telegram": "Tattoosochicentr",
     "whatsapp": "79649484088"
   },
   "hours": "Работаем круглосуточно, лучше заранее записаться",
-  "services": ["Татуировка", "Пирсинг", "Удаление лазером", "Татуаж", "Эскиз / консультация"],
   "slots": { "from": "10:00", "to": "22:00", "step": 30 },
   "rating": {
     "value": "5.0",

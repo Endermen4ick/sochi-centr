@@ -9,41 +9,54 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--gold)}
-.top{position:sticky;top:0;z-index:5;background:rgba(20,16,13,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.top .in{max-width:980px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.top{position:sticky;top:0;z-index:5;background:rgba(20,16,13,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .in{max-width:900px;margin:0 auto;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .top h1{font-size:1.05rem;margin:0;flex:1 1 auto}
 .top h1 small{color:var(--muted);font-weight:500}
-main{max-width:980px;margin:0 auto;padding:20px 16px 80px;display:grid;gap:18px}
+main{max-width:900px;margin:0 auto;padding:18px 16px 80px;display:grid;gap:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
-.card h2{margin:0 0 4px;font-size:1.1rem}
-.card .hint{color:var(--muted);font-size:.88rem;margin:0 0 14px}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
-label{display:grid;gap:6px;font-size:.82rem;font-weight:600;color:var(--muted)}
-input,textarea,select{font:inherit;color:var(--ink);background:rgba(0,0,0,.3);border:1px solid rgba(243,233,220,.2);border-radius:12px;padding:10px 12px;width:100%;min-height:44px}
-textarea{resize:vertical;min-height:110px}
-input:focus,textarea:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,122,63,.22)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+.card h2{margin:0 0 4px;font-size:1.15rem}
+.hint{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+input{font:inherit;color:var(--ink);background:rgba(0,0,0,.3);border:1px solid rgba(243,233,220,.2);border-radius:12px;padding:10px 12px;width:100%;min-height:46px;min-width:0}
+input:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,122,63,.22)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
 .btn:hover{border-color:var(--ember)}
 .btn.main{background:var(--ember);border-color:var(--ember);color:#1E1712}
-.btn[disabled]{opacity:.55;cursor:wait}
-.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
-.check{display:flex;gap:10px;align-items:center;font-size:.95rem;color:var(--ink);font-weight:500}
-.check input{width:20px;height:20px;min-height:0}
-.msg{font-size:.9rem;min-height:1.3em}
-#gmsg:empty{display:none}
+.btn.sm{min-height:38px;min-width:38px;padding:0 10px;border-radius:10px;font-weight:500}
+.btn.del:hover{border-color:var(--err);color:var(--err)}
+.btn[disabled]{opacity:.5;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.msg{font-size:.92rem}
+.msg:empty{display:none}
 .msg.ok{color:var(--ok)}.msg.err{color:var(--err)}
-.chats{display:grid;gap:8px;margin-top:10px}
-.chats button{text-align:left;justify-content:flex-start;border-radius:12px}
-ol{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:.9rem}
-ol li{margin:3px 0}
-code{background:rgba(0,0,0,.35);padding:1px 6px;border-radius:6px;font-size:.88em}
-.badge{display:inline-block;font-size:.75rem;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-.badge.on{color:var(--ok);border-color:rgba(111,207,151,.4)}
+/* услуги */
+.svc{display:grid;gap:10px}
+.svc .it{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.15)}
+.svc .ctl{display:flex;gap:6px}
+.svc .head{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:8px;padding:0 10px;font-size:.78rem;color:var(--muted);font-weight:600}
+.svc .head span:last-child{width:126px}
+@media(max-width:600px){.svc .it{grid-template-columns:1fr 1fr}.svc .it input:first-child{grid-column:1/-1}.svc .head{display:none}.svc .ctl{justify-content:flex-end}}
+/* фото */
+.ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.ph figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(0,0,0,.2);display:grid}
+.ph img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.ph .bar{display:flex;gap:6px;padding:8px;justify-content:space-between;align-items:center}
+.ph .n{font-size:.78rem;color:var(--muted)}
+.ph .main-tag{font-size:.72rem;color:var(--gold);font-weight:600}
+.drop{display:flex;align-items:center;justify-content:center;border:1.5px dashed rgba(243,233,220,.3);border-radius:14px;min-height:120px;cursor:pointer;color:var(--muted);text-align:center;padding:12px;font-weight:600}
+.drop:hover,.drop.on{border-color:var(--ember);color:var(--ink)}
 details summary{cursor:pointer;font-weight:600}
+ol{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:.9rem}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));margin-top:12px}
+label{display:grid;gap:6px;font-size:.8rem;font-weight:600;color:var(--muted)}
+.badge{display:inline-block;font-size:.75rem;padding:2px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-weight:500;vertical-align:middle}
+.badge.on{color:var(--ok);border-color:rgba(111,207,151,.4)}
+.dirty{color:var(--gold);font-size:.85rem}
 </style>
 </head><body>
 <header class="top"><div class="in">
   <h1>Админ-панель <small>· Сочи-центр</small></h1>
+  <span class="dirty" id="dirty" hidden>Есть несохранённые изменения</span>
   <a class="btn" href="../" target="_blank" rel="noopener">Открыть сайт</a>
   <button class="btn main" id="save" type="button">Сохранить на сайт</button>
 </div></header>
@@ -51,174 +64,135 @@ details summary{cursor:pointer;font-weight:600}
 <p class="msg" id="gmsg" aria-live="polite"></p>
 
 <section class="card">
-  <h2>Заявки в Telegram <span class="badge" id="tgstate">не настроено</span></h2>
-  <p class="hint">Заявки с кнопки «Записаться» приходят в Telegram от вашего бота: имя, телефон, услуга, день, время, способ связи и комментарий.</p>
-  <details><summary>Как подключить (2 минуты)</summary><ol>
-    <li>В Telegram откройте <a href="https://t.me/BotFather" target="_blank" rel="noopener">@BotFather</a>, отправьте <code>/newbot</code>, придумайте имя. Скопируйте токен вида <code>123456:ABC…</code> и вставьте ниже.</li>
-    <li>Откройте своего нового бота и нажмите «Start» (или добавьте бота в группу мастеров и напишите там любое сообщение).</li>
-    <li>Нажмите «Найти чаты» и выберите нужный — ID подставится сам. Можно указать несколько ID через запятую.</li>
-    <li>Нажмите «Тестовая заявка», потом «Сохранить на сайт».</li>
-  </ol></details>
-  <div class="grid" style="margin-top:14px">
-    <label>Токен бота<input id="botToken" autocomplete="off" spellcheck="false" placeholder="123456789:AA..."></label>
-    <label>ID чатов (через запятую)<input id="chatIds" autocomplete="off" spellcheck="false" placeholder="123456789, -1001234567890"></label>
+  <h2>Услуги и цены</h2>
+  <p class="hint">У каждой услуги своя цена. Цену пишите как хотите показать на сайте, например «от 3 000 ₽» или «1 500 ₽». Пустая цена — на сайте будет «цену уточняйте». Услуги появятся в прайсе, в списке «Что делаем» и в форме записи.</p>
+  <div class="svc">
+    <div class="head"><span>Услуга</span><span>Цена</span><span></span></div>
+    <div id="svc"></div>
   </div>
-  <div class="row"><button class="btn" id="find" type="button">Найти чаты</button><button class="btn" id="test" type="button">Тестовая заявка</button><span class="msg" id="tmsg"></span></div>
-  <div class="chats" id="chats"></div>
+  <div class="row"><button class="btn" id="add" type="button">+ Добавить услугу</button></div>
 </section>
 
 <section class="card">
-  <h2>Контакты и часы работы</h2>
-  <div class="grid">
-    <label>Телефон<input id="phone"></label>
-    <label>Telegram (ник без @)<input id="tg"></label>
-    <label>WhatsApp (номер цифрами)<input id="wa"></label>
-  </div>
-  <label style="margin-top:12px">Часы работы (текст на сайте)<input id="hours"></label>
+  <h2>Фото</h2>
+  <p class="hint">Первые три фото — на главном экране, все фото — в галерее. Порядок меняется стрелками. Новые фото сразу загружаются в репозиторий, на сайте появятся после «Сохранить на сайт».</p>
+  <div class="ph" id="ph"></div>
+  <input type="file" id="file" accept="image/*" multiple hidden>
+  <p class="msg" id="pmsg" style="margin-top:12px"></p>
 </section>
 
-<section class="card">
-  <h2>Запись: услуги и время</h2>
-  <p class="hint">Список услуг в форме записи — по одной на строке. Время — с какого по какое и шаг в минутах.</p>
-  <label>Услуги<textarea id="services" rows="6"></textarea></label>
-  <div class="grid" style="margin-top:12px">
-    <label>Запись с<input id="sFrom" type="time"></label>
-    <label>Запись до<input id="sTo" type="time"></label>
-    <label>Шаг, минут<input id="sStep" type="number" min="10" step="5"></label>
-  </div>
-</section>
-
-<section class="card">
-  <h2>Рейтинг и отзывы с Яндекс Карт</h2>
-  <p class="hint">Окно отзывов Яндекса на сайте обновляется само. Цифры и короткие пересказы ниже показываются в блоке «Отзывы» — сверьте их с <a id="yalink" href="https://yandex.ru/maps/org/118079780552/reviews/" target="_blank" rel="noopener">карточкой на Яндекс Картах</a> и поправьте при необходимости.</p>
-  <div class="grid">
-    <label>Рейтинг<input id="rValue" placeholder="5.0"></label>
-    <label>Оценок<input id="rRatings" type="number" min="0"></label>
-    <label>Отзывов<input id="rReviews" type="number" min="0"></label>
-    <label>ID организации в Яндексе<input id="yaId"></label>
-  </div>
-  <label style="margin-top:12px">Отзывы на сайте (по одному на строке)<textarea id="reviews" rows="8"></textarea></label>
-</section>
-
-<section class="card">
-  <h2>Прочее</h2>
-  <label class="check"><input type="checkbox" id="demo"> Показывать внизу сайта плашку «Демо-концепт»</label>
-</section>
-
-<section class="card">
-  <h2>Сохранение на GitHub <span class="badge" id="ghstate">не подключено</span></h2>
-  <p class="hint">Кнопка «Сохранить на сайт» записывает настройки в файл <code>config.json</code> репозитория. Сайт обновится через 1–2 минуты. Нужен токен GitHub — вводится один раз и хранится только в этом браузере.</p>
-  <details><summary>Как получить токен</summary><ol>
+<section class="card" id="ghcard">
+  <h2>Подключение к GitHub <span class="badge" id="ghstate">не подключено</span></h2>
+  <p class="hint">Нужно один раз, чтобы кнопка «Сохранить на сайт» работала. Токен хранится только в этом браузере.</p>
+  <details id="ghhelp"><summary>Как получить токен</summary><ol>
     <li>Откройте <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained tokens</a>.</li>
-    <li>Repository access: «Only select repositories» → этот репозиторий.</li>
+    <li>Repository access: «Only select repositories» → <b>sochi-centr</b>.</li>
     <li>Permissions → Repository → <b>Contents: Read and write</b>. Создайте токен и вставьте ниже.</li>
   </ol></details>
-  <div class="grid" style="margin-top:14px">
-    <label>Владелец (логин GitHub)<input id="ghOwner" autocomplete="off"></label>
-    <label>Репозиторий<input id="ghRepo" autocomplete="off"></label>
-    <label>Ветка<input id="ghBranch" autocomplete="off" placeholder="main"></label>
+  <div class="grid">
     <label>Токен GitHub<input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+    <label>Владелец<input id="ghOwner" autocomplete="off"></label>
+    <label>Репозиторий<input id="ghRepo" autocomplete="off"></label>
   </div>
-  <div class="row"><button class="btn" id="dl" type="button">Скачать config.json</button><button class="btn" id="forget" type="button">Забыть токен в этом браузере</button></div>
+  <div class="row"><button class="btn" id="forget" type="button">Забыть токен</button></div>
 </section>
 </main>
 
 <script>
 (function(){
 var $=function(id){return document.getElementById(id)};
-var cfg={};
-function msg(el,t,cls){el.textContent=t;el.className='msg'+(cls?' '+cls:'')}
-function lines(v){return v.split('\n').map(function(s){return s.trim()}).filter(Boolean)}
+var cfg={},svc=[],photos=[],preview={},dirty=false;
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return ''}}
+function msg(el,t,cls){el.textContent=t;el.className='msg'+(cls?' '+cls:'')}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function mark(){dirty=true;$('dirty').hidden=false}
 
-function fill(c){
-  cfg=c||{};var t=cfg.telegram||{},ct=cfg.contacts||{},s=cfg.slots||{},r=cfg.rating||{};
-  $('botToken').value=t.botToken||'';$('chatIds').value=t.chatIds||'';
-  $('phone').value=ct.phone||'';$('tg').value=ct.telegram||'';$('wa').value=ct.whatsapp||'';
-  $('hours').value=cfg.hours||'';
-  $('services').value=(cfg.services||[]).join('\n');
-  $('sFrom').value=s.from||'10:00';$('sTo').value=s.to||'22:00';$('sStep').value=s.step||30;
-  $('rValue').value=r.value||'';$('rRatings').value=r.ratings||'';$('rReviews').value=r.reviews||'';$('yaId').value=r.yandexOrgId||'';
-  $('reviews').value=(cfg.reviews||[]).join('\n');
-  $('demo').checked=cfg.demo!==false;
-  state();
+// --- Услуги ---
+function drawSvc(){
+  $('svc').innerHTML=svc.map(function(s,i){return '<div class="it" data-i="'+i+'">'+
+    '<input data-k="name" value="'+esc(s.name)+'" placeholder="Название услуги" aria-label="Услуга">'+
+    '<input data-k="price" value="'+esc(s.price)+'" placeholder="Цена не указана" aria-label="Цена">'+
+    '<div class="ctl"><button class="btn sm" data-a="up" type="button" title="Выше"'+(i?'':' disabled')+'>↑</button><button class="btn sm" data-a="down" type="button" title="Ниже"'+(i<svc.length-1?'':' disabled')+'>↓</button><button class="btn sm del" data-a="del" type="button" title="Удалить">Удалить</button></div></div>'}).join('');
 }
-function collect(){
-  return {
-    telegram:{botToken:$('botToken').value.trim(),chatIds:$('chatIds').value.trim()},
-    contacts:{phone:$('phone').value.trim(),telegram:$('tg').value.trim().replace(/^@/,''),whatsapp:$('wa').value.replace(/\D/g,'')},
-    hours:$('hours').value.trim(),
-    services:lines($('services').value),
-    slots:{from:$('sFrom').value||'10:00',to:$('sTo').value||'22:00',step:+$('sStep').value||30},
-    rating:{value:$('rValue').value.trim(),ratings:+$('rRatings').value||0,reviews:+$('rReviews').value||0,yandexOrgId:$('yaId').value.trim()},
-    reviews:lines($('reviews').value),
-    demo:$('demo').checked
-  };
-}
-function state(){
-  var ok=$('botToken').value.trim()&&$('chatIds').value.trim();
-  $('tgstate').textContent=ok?'подключено':'не настроено';$('tgstate').className='badge'+(ok?' on':'');
-  var gh=$('ghOwner').value&&$('ghRepo').value&&$('ghToken').value;
-  $('ghstate').textContent=gh?'подключено':'не подключено';$('ghstate').className='badge'+(gh?' on':'');
-  var id=$('yaId').value.trim();if(id)$('yalink').href='https://yandex.ru/maps/org/'+id+'/reviews/';
-}
-document.addEventListener('input',state);
+$('svc').addEventListener('input',function(e){var it=e.target.closest('.it');if(!it||!e.target.dataset.k)return;svc[+it.dataset.i][e.target.dataset.k]=e.target.value;mark()});
+$('svc').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var i=+b.closest('.it').dataset.i,a=b.dataset.a;
+  if(a==='del'){if(!confirm('Удалить услугу «'+(svc[i].name||'без названия')+'»?'))return;svc.splice(i,1)}
+  else if(a==='up'&&i>0){svc.splice(i-1,0,svc.splice(i,1)[0])}
+  else if(a==='down'&&i<svc.length-1){svc.splice(i+1,0,svc.splice(i,1)[0])}
+  drawSvc();mark()});
+$('add').onclick=function(){svc.push({name:'',price:''});drawSvc();mark();var l=$('svc').lastElementChild;if(l)l.querySelector('input').focus()};
 
-// GitHub: владелец и репозиторий берём из адреса owner.github.io/repo/admin/
+// --- Фото ---
+function drawPh(){
+  $('ph').innerHTML=photos.map(function(p,i){return '<figure data-i="'+i+'"><img src="'+esc(preview[p]||('../'+p))+'" alt="Фото '+(i+1)+'"><div class="bar"><span class="n">'+(i<3?'<span class="main-tag">Главный экран</span>':'Фото '+(i+1))+'</span><span style="display:flex;gap:6px"><button class="btn sm" data-a="up" type="button" title="Раньше"'+(i?'':' disabled')+'>←</button><button class="btn sm" data-a="down" type="button" title="Позже"'+(i<photos.length-1?'':' disabled')+'>→</button><button class="btn sm del" data-a="del" type="button" title="Убрать с сайта">✕</button></span></div></figure>'}).join('')+
+  '<label class="drop" id="drop" for="file">+ Загрузить фото<br><small style="font-weight:500">можно несколько сразу</small></label>';
+}
+$('ph').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var i=+b.closest('figure').dataset.i,a=b.dataset.a;
+  if(a==='del'){if(!confirm('Убрать это фото с сайта?'))return;photos.splice(i,1)}
+  else if(a==='up'&&i>0){photos.splice(i-1,0,photos.splice(i,1)[0])}
+  else if(a==='down'&&i<photos.length-1){photos.splice(i+1,0,photos.splice(i,1)[0])}
+  drawPh();mark()});
+
+function resize(file){return new Promise(function(res,rej){
+  var img=new Image(),u=URL.createObjectURL(file);
+  img.onload=function(){var k=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.85))};
+  img.onerror=function(){rej(new Error('Не удалось открыть '+file.name))};img.src=u})}
+
+function upload(files){
+  files=[].slice.call(files).filter(function(f){return /^image\//.test(f.type)});if(!files.length)return;
+  if(!gh()){msg($('pmsg'),'Сначала подключите GitHub (блок ниже) — фото загружаются прямо в репозиторий.','err');$('ghcard').scrollIntoView({behavior:'smooth'});$('ghhelp').open=true;return}
+  var done=0;msg($('pmsg'),'Загружаем 0 из '+files.length+'…');
+  files.reduce(function(p,file,k){return p.then(function(){
+    return resize(file).then(function(data){
+      var path='img/u'+Date.now()+'-'+k+'.jpg';
+      return put(path,data.split(',')[1],'Админка: новое фото').then(function(){preview[path]=data;photos.push(path);done++;drawPh();mark();msg($('pmsg'),'Загружено '+done+' из '+files.length+'…')});
+    });
+  })},Promise.resolve())
+  .then(function(){msg($('pmsg'),'Фото загружены ('+done+'). Нажмите «Сохранить на сайт».','ok')})
+  .catch(function(e){msg($('pmsg'),'Ошибка загрузки: '+e.message,'err')});
+}
+$('file').onchange=function(){upload(this.files);this.value=''};
+$('ph').addEventListener('dragover',function(e){e.preventDefault();var d=$('drop');if(d)d.classList.add('on')});
+$('ph').addEventListener('dragleave',function(){var d=$('drop');if(d)d.classList.remove('on')});
+$('ph').addEventListener('drop',function(e){e.preventDefault();upload(e.dataTransfer.files)});
+
+// --- GitHub ---
 var m=location.hostname.match(/^([^.]+)\.github\.io$/i),seg=location.pathname.split('/').filter(Boolean);
 $('ghOwner').value=ls('gh_owner')||(m?m[1]:'');
 $('ghRepo').value=ls('gh_repo')||(m?(seg[0]&&seg[0]!=='admin'?seg[0]:m[1]+'.github.io'):'');
-$('ghBranch').value=ls('gh_branch')||'main';
 $('ghToken').value=ls('gh_token');
-
-fetch('../config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(fill).catch(function(){fill({});msg($('gmsg'),'Не удалось загрузить config.json — заполните поля и сохраните.','err')});
-
-// Telegram
-function tgApi(method,params){
-  var tok=$('botToken').value.trim();if(!tok)return Promise.reject(new Error('Сначала вставьте токен бота'));
-  var b=new URLSearchParams();Object.keys(params||{}).forEach(function(k){b.set(k,params[k])});
-  return fetch('https://api.telegram.org/bot'+tok+'/'+method,{method:'POST',body:b}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.description||'Ошибка Telegram');return j.result});
+function gh(){var o=$('ghOwner').value.trim(),r=$('ghRepo').value.trim(),t=$('ghToken').value.trim();if(!o||!r||!t)return null;ls('gh_owner',o);ls('gh_repo',r);ls('gh_token',t);return {o:o,r:r,t:t}}
+function state(){var on=!!($('ghOwner').value&&$('ghRepo').value&&$('ghToken').value);$('ghstate').textContent=on?'подключено':'не подключено';$('ghstate').className='badge'+(on?' on':'')}
+['ghToken','ghOwner','ghRepo'].forEach(function(id){$(id).addEventListener('input',state)});state();
+function put(path,b64,message){
+  var g=gh(),url='https://api.github.com/repos/'+g.o+'/'+g.r+'/contents/'+path,H={'Authorization':'Bearer '+g.t,'Accept':'application/vnd.github+json'};
+  return fetch(url,{headers:H,cache:'no-store'}).then(function(x){return x.status===404?{}:x.json()}).then(function(cur){
+    return fetch(url,{method:'PUT',headers:H,body:JSON.stringify({message:message,content:b64,sha:cur.sha})});
+  }).then(function(x){return x.json().then(function(j){if(!x.ok)throw new Error(x.status===401?'неверный токен':x.status===403||x.status===404?'у токена нет доступа к репозиторию (нужно Contents: Read and write)':(j.message||'GitHub '+x.status));return j})});
 }
-$('find').onclick=function(){
-  var box=$('chats');box.innerHTML='';msg($('tmsg'),'Ищем…');
-  tgApi('getUpdates',{limit:100}).then(function(u){
-    var seen={},list=[];
-    u.forEach(function(x){var c=(x.message||x.channel_post||x.my_chat_member||x.edited_message||{}).chat;if(c&&!seen[c.id]){seen[c.id]=1;list.push(c)}});
-    if(!list.length){msg($('tmsg'),'Чатов не найдено. Напишите боту любое сообщение и нажмите ещё раз.','err');return}
-    msg($('tmsg'),'Нажмите на чат, чтобы добавить его:','ok');
-    list.forEach(function(c){var b=document.createElement('button');b.type='button';b.className='btn';
-      b.textContent=(c.title||[c.first_name,c.last_name].filter(Boolean).join(' ')||c.username||'Чат')+' · '+c.id;
-      b.onclick=function(){var ids=$('chatIds').value.split(/[\s,;]+/).filter(Boolean);if(ids.indexOf(String(c.id))<0)ids.push(String(c.id));$('chatIds').value=ids.join(', ');state();msg($('tmsg'),'Добавлен чат '+c.id+'. Теперь «Тестовая заявка».','ok')};
-      box.appendChild(b)});
-  }).catch(function(e){msg($('tmsg'),e.message,'err')});
-};
-$('test').onclick=function(){
-  var ids=$('chatIds').value.split(/[\s,;]+/).filter(Boolean);
-  if(!ids.length){msg($('tmsg'),'Укажите ID чата','err');return}
-  msg($('tmsg'),'Отправляем…');
-  Promise.all(ids.map(function(id){return tgApi('sendMessage',{chat_id:id,parse_mode:'HTML',text:'🔔 <b>Тестовая заявка</b>\n\n👤 <b>Имя:</b> Проверка\n📞 <b>Телефон:</b> +7 900 000-00-00\n✒️ <b>Услуга:</b> Татуировка\n📅 <b>День:</b> завтра\n🕐 <b>Время:</b> 14:00\n\nЕсли вы это видите — заявки с сайта будут приходить сюда.'})}))
-    .then(function(){msg($('tmsg'),'Готово, проверьте Telegram. Не забудьте «Сохранить на сайт».','ok')})
-    .catch(function(e){msg($('tmsg'),e.message,'err')});
-};
+$('forget').onclick=function(){ls('gh_token',null);$('ghToken').value='';state();msg($('gmsg'),'Токен удалён из этого браузера.','ok')};
 
-// Сохранение
+// --- Загрузка и сохранение ---
 function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+fetch('../config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){
+  cfg=c||{};
+  svc=(cfg.services||[]).map(function(s){return typeof s==='string'?{name:s,price:''}:{name:s.name||'',price:s.price||''}});
+  photos=(cfg.photos||[]).slice();
+  drawSvc();drawPh();
+}).catch(function(){msg($('gmsg'),'Не удалось загрузить настройки сайта (config.json). Обновите страницу.','err')});
+
 $('save').onclick=function(){
-  var data=JSON.stringify(collect(),null,2)+'\n';
-  var o=$('ghOwner').value.trim(),r=$('ghRepo').value.trim(),br=$('ghBranch').value.trim()||'main',tok=$('ghToken').value.trim();
-  if(!o||!r||!tok){msg($('gmsg'),'Чтобы сохранить на сайт, заполните внизу блок «Сохранение на GitHub». Или нажмите «Скачать config.json».','err');$('ghToken').scrollIntoView({behavior:'smooth',block:'center'});return}
-  ls('gh_owner',o);ls('gh_repo',r);ls('gh_branch',br);ls('gh_token',tok);
-  var url='https://api.github.com/repos/'+o+'/'+r+'/contents/config.json',H={'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'};
+  if(!gh()){msg($('gmsg'),'Чтобы сохранить, подключите GitHub — блок внизу страницы.','err');$('ghcard').scrollIntoView({behavior:'smooth'});$('ghhelp').open=true;return}
+  var clean=svc.map(function(s){return {name:s.name.trim(),price:s.price.trim()}}).filter(function(s){return s.name});
+  if(!clean.length){msg($('gmsg'),'Добавьте хотя бы одну услугу.','err');return}
+  cfg.services=clean;cfg.photos=photos.slice();
   var btn=$('save');btn.disabled=true;msg($('gmsg'),'Сохраняем…');
-  fetch(url+'?ref='+encodeURIComponent(br),{headers:H,cache:'no-store'}).then(function(x){return x.status===404?{}:x.json()}).then(function(cur){
-    return fetch(url,{method:'PUT',headers:H,body:JSON.stringify({message:'Админка: обновлены настройки сайта',content:b64(data),branch:br,sha:cur.sha})});
-  }).then(function(x){return x.json().then(function(j){if(!x.ok)throw new Error(j.message||('GitHub '+x.status));return j})})
-  .then(function(){msg($('gmsg'),'Сохранено. Сайт обновится через 1–2 минуты.','ok')})
-  .catch(function(e){msg($('gmsg'),'Не сохранилось: '+e.message+'. Проверьте токен и права Contents: Read and write.','err')})
-  .then(function(){btn.disabled=false;state()});
+  put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Админка: услуги, цены и фото')
+    .then(function(){dirty=false;$('dirty').hidden=true;msg($('gmsg'),'Сохранено. Сайт обновится через 1–2 минуты.','ok')})
+    .catch(function(e){msg($('gmsg'),'Не сохранилось: '+e.message+'.','err')})
+    .then(function(){btn.disabled=false;svc=clean;drawSvc()});
 };
-$('dl').onclick=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(collect(),null,2)+'\n'],{type:'application/json'}));a.download='config.json';a.click()};
-$('forget').onclick=function(){ls('gh_token',null);$('ghToken').value='';state();msg($('gmsg'),'Токен GitHub удалён из этого браузера.','ok')};
+addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
 })();
 </script>
 </body></html>
