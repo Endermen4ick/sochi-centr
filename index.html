@@ -499,6 +499,9 @@ document.addEventListener('click',function(e){
   else showExt(b.closest('.ext'));
 });
 
+// Страховка: если анимация первого экрана застряла (энергосбережение, фоновая вкладка) — показать текст сразу
+setTimeout(function(){if(window.gsap)gsap.getTweensOf('#title .ch, .hero .hi').forEach(function(t){if(t.progress()<1)t.progress(1)})},1200);
+
 slots();
 fetch('config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(apply).catch(function(){});
 
