@@ -81,7 +81,9 @@ var cfg={},svc=[],works=[],pending={},dirty=false,pick=null;
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return ''}}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
 function st(t,cls){$('st').textContent=t;$('st').className='st'+(cls?' '+cls:'')}
-function src(p){return pending[p]||('../'+p)}
+// Ключ фото img/NAME.EXT → файл img/opt/NAME-640.EXT (как на сайте)
+function opt(p,w){var m=String(p).match(/^(.*?)([^\/]+?)(\.\w+)?$/);return m[1]+'opt/'+m[2]+'-'+w+(m[3]||'.webp')}
+function src(p){return pending[p]?pending[p].v640:'../'+opt(p,640)}
 function mark(){dirty=true;st('Есть несохранённые изменения','warn')}
 
 // Ключ доступа: разработчик один раз открывает владельцу ссылку admin/#key=...
@@ -117,16 +119,19 @@ $('ph').addEventListener('click',function(e){
   works.splice(+b.closest('figure').dataset.i,1);drawWorks();mark()});
 
 // ---- Выбор и сжатие фото ----
+// Каждое фото — два файла: 640 и 1280 px по ширине (WebP, если браузер умеет, иначе JPEG)
+function variant(img,w){var k=Math.min(1,w/img.width),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);var g=c.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(img,0,0,c.width,c.height);
+  var d=c.toDataURL('image/webp',.75);return d.indexOf('data:image/webp')===0?{ext:'webp',d:d}:{ext:'jpg',d:c.toDataURL('image/jpeg',.8)}}
 function shrink(file){return new Promise(function(res,rej){
   var img=new Image(),u=URL.createObjectURL(file);
-  img.onload=function(){var k=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.85))};
+  img.onload=function(){var a=variant(img,640),b=variant(img,1280);URL.revokeObjectURL(u);res({ext:a.ext,v640:a.d,v1280:b.ext===a.ext?b.d:variant(img,1280).d})};
   img.onerror=function(){rej()};img.src=u})}
 $('file').onchange=function(){
   var files=[].slice.call(this.files).filter(function(f){return /^image\//.test(f.type)}),p=pick;this.value='';this.multiple=false;pick=null;
   if(!files.length||!p)return;
   st('Обрабатываем фото…');
   Promise.all(files.map(shrink)).then(function(list){
-    list.forEach(function(data,k){var path='img/u'+Date.now()+'-'+k+'.jpg';pending[path]=data;
+    list.forEach(function(data,k){var path='img/u'+Date.now()+'-'+k+'.'+data.ext;pending[path]=data;
       if(p.works)works.push(path);else if(k===0)svc[p.svc].photo=path});
     drawSvc();drawWorks();mark();
   }).catch(function(){st('Не удалось открыть фото. Попробуйте другое.','err')});
@@ -155,7 +160,9 @@ $('save').onclick=function(){
   var used=works.concat(clean.map(function(s){return s.photo})).filter(function(p){return p&&pending[p]});
   var btn=$('save');btn.disabled=true;
   var n=0;st(used.length?'Загружаем фото 0 из '+used.length+'…':'Сохраняем…');
-  used.reduce(function(p,path){return p.then(function(){return put(path,pending[path].split(',')[1],'Сайт: новое фото').then(function(){delete pending[path];n++;st('Загружаем фото '+n+' из '+used.length+'…')})})},Promise.resolve())
+  used.reduce(function(p,path){return p.then(function(){var v=pending[path];
+    return put(opt(path,640),v.v640.split(',')[1],'Сайт: новое фото').then(function(){return put(opt(path,1280),v.v1280.split(',')[1],'Сайт: новое фото')})
+      .then(function(){delete pending[path];n++;st('Загружаем фото '+n+' из '+used.length+'…')})})},Promise.resolve())
   .then(function(){cfg.services=clean;cfg.photos=works.slice();st('Сохраняем…');return put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Сайт: услуги, цены и фото')})
   .then(function(){svc=clean;dirty=false;st('Сохранено. На сайте изменения появятся через 1–2 минуты.','ok')})
   .catch(function(e){st(e.code===401||e.code===403||e.code===404?'Доступ к сохранению устарел. Попросите разработчика прислать новую ссылку для входа.':'Не получилось сохранить. Проверьте интернет и попробуйте ещё раз.','err')})
