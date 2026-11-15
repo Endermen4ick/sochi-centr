@@ -13,9 +13,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Segoe UI",sys
 main{max-width:860px;margin:0 auto;padding:12px 16px 40px;display:grid;gap:28px}
 h2{font-size:1.15rem;margin:0 0 4px}
 .hint{color:var(--muted);font-size:.9rem;margin:0 0 14px}
-input{font:inherit;color:var(--ink);background:rgba(0,0,0,.3);border:1px solid rgba(243,233,220,.2);border-radius:12px;padding:10px 12px;width:100%;min-height:48px;min-width:0}
-input:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,122,63,.22)}
-input::placeholder{color:rgba(243,233,220,.35)}
+input,textarea{font:inherit;color:var(--ink);background:rgba(0,0,0,.3);border:1px solid rgba(243,233,220,.2);border-radius:12px;padding:10px 12px;width:100%;min-height:48px;min-width:0}
+input:focus,textarea:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px rgba(224,122,63,.22)}
+input::placeholder,textarea::placeholder{color:rgba(243,233,220,.35)}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:.95rem;font-weight:600;cursor:pointer;text-decoration:none}
 .btn:hover{border-color:var(--ember)}
 .btn.main{background:var(--ember);border-color:var(--ember);color:#1E1712}
@@ -32,6 +32,7 @@ input::placeholder{color:rgba(243,233,220,.35)}
 .pic.has span{position:absolute;left:0;right:0;bottom:0;padding:4px;background:rgba(0,0,0,.6);color:#fff;font-size:.72rem}
 .flds{display:grid;gap:8px;align-content:start}
 .flds .acts{display:flex;gap:16px;flex-wrap:wrap}
+textarea{resize:vertical;line-height:1.4;min-height:64px}
 .add{width:100%;min-height:56px;border-style:dashed;background:transparent}
 /* примеры работ */
 .ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
@@ -61,6 +62,11 @@ input::placeholder{color:rgba(243,233,220,.35)}
   <p class="hint">Нажмите на квадрат, чтобы добавить или заменить фото услуги. Цену пишите как на сайте, например «от 3 000 ₽». Без цены будет «цену уточняйте».</p>
   <div class="svc" id="svc"></div>
   <button class="btn add" id="add" type="button" style="margin-top:12px">+ Добавить услугу</button>
+</section>
+<section>
+  <h2>О салоне</h2>
+  <p class="hint">Этот текст показывается на сайте в блоке «О месте», сразу под первым экраном.</p>
+  <textarea id="about" rows="4" placeholder="Пара предложений о салоне" aria-label="Текст о салоне"></textarea>
 </section>
 <section>
   <h2>Примеры работ</h2>
@@ -98,6 +104,7 @@ function drawSvc(){
     '<div class="pic'+(s.photo?' has':'')+'" data-a="photo" role="button" tabindex="0">'+(s.photo?'<img src="'+esc(src(s.photo))+'" alt=""><span>Заменить</span>':'+ Фото')+'</div>'+
     '<div class="flds"><input data-k="name" value="'+esc(s.name)+'" placeholder="Название услуги" aria-label="Название услуги">'+
     '<input data-k="price" value="'+esc(s.price)+'" placeholder="Цена" aria-label="Цена">'+
+    '<textarea data-k="desc" rows="2" placeholder="Описание (необязательно)" aria-label="Описание услуги">'+esc(s.desc)+'</textarea>'+
     '<div class="acts">'+(s.photo?'<button class="link" data-a="nophoto" type="button">Убрать фото</button>':'')+'<button class="link" data-a="del" type="button">Удалить услугу</button></div></div></div>'}).join('');
 }
 $('svc').addEventListener('input',function(e){var it=e.target.closest('.it');if(!it||!e.target.dataset.k)return;svc[+it.dataset.i][e.target.dataset.k]=e.target.value;mark()});
@@ -106,7 +113,8 @@ $('svc').addEventListener('click',function(e){var b=e.target.closest('[data-a]')
   if(b.dataset.a==='nophoto'){svc[i].photo='';drawSvc();mark();return}
   if(b.dataset.a==='del'){if(!confirm('Удалить услугу «'+(svc[i].name||'без названия')+'»?'))return;svc.splice(i,1);drawSvc();mark()}});
 $('svc').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList.contains('pic'))e.target.click()});
-$('add').onclick=function(){svc.push({name:'',price:'',photo:''});drawSvc();mark();$('svc').lastElementChild.querySelector('input').focus()};
+$('about').addEventListener('input',mark);
+$('add').onclick=function(){svc.push({name:'',price:'',photo:'',desc:''});drawSvc();mark();$('svc').lastElementChild.querySelector('input').focus()};
 
 // ---- Примеры работ ----
 function drawWorks(){
@@ -140,7 +148,8 @@ $('file').onchange=function(){
 // ---- Загрузка ----
 fetch('../config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){
   cfg=c||{};
-  svc=(cfg.services||[]).map(function(s){return typeof s==='string'?{name:s,price:'',photo:''}:{name:s.name||'',price:s.price||'',photo:s.photo||''}});
+  svc=(cfg.services||[]).map(function(s){return typeof s==='string'?{name:s,price:'',photo:''}:{name:s.name||'',price:s.price||'',photo:s.photo||'',desc:s.desc||''}});
+  $('about').value=cfg.about||'';
   works=(cfg.photos||[]).slice();
   drawSvc();drawWorks();
 }).catch(function(){st('Не удалось загрузить данные сайта. Обновите страницу.','err')});
@@ -155,7 +164,7 @@ function b64(s){return btoa(unescape(encodeURIComponent(s)))}
 
 $('save').onclick=function(){
   if(!ls('gh_token')||!OWNER){st('Сохранение не подключено. Попросите разработчика прислать ссылку для входа.','err');return}
-  var clean=svc.map(function(s){return {name:s.name.trim(),price:s.price.trim(),photo:s.photo||''}}).filter(function(s){return s.name});
+  var clean=svc.map(function(s){return {name:s.name.trim(),price:s.price.trim(),photo:s.photo||'',desc:(s.desc||'').trim()}}).filter(function(s){return s.name});
   if(!clean.length){st('Добавьте хотя бы одну услугу.','err');return}
   var used=works.concat(clean.map(function(s){return s.photo})).filter(function(p){return p&&pending[p]});
   var btn=$('save');btn.disabled=true;
@@ -163,7 +172,7 @@ $('save').onclick=function(){
   used.reduce(function(p,path){return p.then(function(){var v=pending[path];
     return put(opt(path,640),v.v640.split(',')[1],'Сайт: новое фото').then(function(){return put(opt(path,1280),v.v1280.split(',')[1],'Сайт: новое фото')})
       .then(function(){delete pending[path];n++;st('Загружаем фото '+n+' из '+used.length+'…')})})},Promise.resolve())
-  .then(function(){cfg.services=clean;cfg.photos=works.slice();st('Сохраняем…');return put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Сайт: услуги, цены и фото')})
+  .then(function(){cfg.services=clean;cfg.photos=works.slice();cfg.about=$('about').value.trim();st('Сохраняем…');return put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Сайт: услуги, цены и фото')})
   .then(function(){svc=clean;dirty=false;st('Сохранено. На сайте изменения появятся через 1–2 минуты.','ok')})
   .catch(function(e){st(e.code===401||e.code===403||e.code===404?'Доступ к сохранению устарел. Попросите разработчика прислать новую ссылку для входа.':'Не получилось сохранить. Проверьте интернет и попробуйте ещё раз.','err')})
   .then(function(){btn.disabled=false});

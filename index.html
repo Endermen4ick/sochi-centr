@@ -208,6 +208,7 @@ section{padding-block:clamp(80px,12vw,160px)}
 .sc h3{font-size:1.15rem;line-height:1.2;letter-spacing:-.02em;color:var(--dark)}
 .sc p{font-family:var(--serif);font-weight:600;font-size:1.25rem;color:var(--gold)}
 .sc p.ask{font-family:var(--sans);font-size:.92rem;font-weight:500;color:var(--muted-d)}
+.sc-d{font-size:.92rem;line-height:1.5;color:var(--muted-d);white-space:pre-line;margin:2px 0 4px}
 .sc-go{margin-top:auto;padding-top:12px;font-weight:600;font-size:.92rem;color:var(--ember);text-decoration:none}
 .sc-go::after{content:" →"}
 .works-h{padding-bottom:28px}
@@ -463,11 +464,15 @@ function apply(c){
   if(CFG.reviews&&CFG.reviews.length){all('[data-cfg="reviews"]').forEach(function(ul){ul.innerHTML=CFG.reviews.filter(Boolean).map(function(t){return '<li>'+esc(t)+'</li>'}).join('')})}
   if(CFG.hours){all('[data-cfg="hours"]').forEach(function(e){e.textContent=CFG.hours})}
 
+  // Текст «О салоне»: меняем, только если он отличается от того, что уже на странице (чтобы не сбивать анимацию)
+  var st=document.getElementById('statement'),about=(CFG.about||'').trim();
+  if(st&&about&&st.textContent.replace(/\s+/g,' ').trim()!==about.replace(/\s+/g,' ')){st.innerHTML=about.split(/\s+/).map(function(w){return '<span class="sw">'+esc(w)+'</span>'}).join(' ')}
+
   var sv=svcList(CFG);
   if(sv.length){
     all('[data-cfg="svcCards"]').forEach(function(g){g.innerHTML=sv.map(function(s){return '<article class="sc'+(s.photo?'':' noimg')+'">'+
       (s.photo?'<div class="sc-img"><img src="'+esc(opt(s.photo,640))+'" srcset="'+esc(srcset(s.photo))+'" sizes="(min-width:900px) 300px, 100vw" alt="'+esc(s.name)+'" loading="lazy" decoding="async"></div>':'')+
-      '<div class="sc-b"><h3>'+esc(s.name)+'</h3><p'+(s.price?'':' class="ask"')+'>'+esc(s.price||'цену уточняйте')+'</p><a class="sc-go" href="#bron" data-svc="'+esc(s.name)+'">Записаться</a></div></article>'}).join('')});
+      '<div class="sc-b"><h3>'+esc(s.name)+'</h3>'+(s.desc?'<div class="sc-d">'+esc(s.desc)+'</div>':'')+'<p'+(s.price?'':' class="ask"')+'>'+esc(s.price||'цену уточняйте')+'</p><a class="sc-go" href="#bron" data-svc="'+esc(s.name)+'">Записаться</a></div></article>'}).join('')});
     var tr=document.getElementById('track');if(tr){var one=sv.map(function(s){return '<span>'+esc(s.name)+'</span>'}).join('');tr.innerHTML=one+one+one+one}
     if(f){var sel=f.elements.s,v=sel.value;sel.innerHTML=sv.map(function(s){return '<option value="'+esc(s.name)+'"'+(s.name===v?' selected':'')+'>'+esc(s.name)+(s.price?' — '+esc(s.price):'')+'</option>'}).join('')}
   }
