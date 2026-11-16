@@ -39,6 +39,7 @@ textarea{resize:vertical;line-height:1.4;min-height:64px}
 .ph figure{margin:0;position:relative;border-radius:14px;overflow:hidden;background:var(--card);aspect-ratio:4/5}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .ph .del{position:absolute;top:8px;right:8px;min-height:34px;padding:0 12px;font-size:.8rem;background:rgba(20,16,13,.85)}
+.ph .vtag{position:absolute;left:8px;top:8px;font-size:.72rem;font-weight:600;background:rgba(20,16,13,.85);color:var(--ink);padding:3px 8px;border-radius:999px}
 .ph .tag{position:absolute;left:8px;bottom:8px;font-size:.72rem;font-weight:600;background:rgba(20,16,13,.85);color:var(--gold);padding:3px 8px;border-radius:999px}
 .ph .addph{border:1.5px dashed rgba(243,233,220,.3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;color:var(--muted);font-weight:600;cursor:pointer;background:transparent;font:inherit;aspect-ratio:4/5;border-radius:14px}
 .ph .addph:hover{border-color:var(--ember);color:var(--ink)}
@@ -70,7 +71,7 @@ textarea{resize:vertical;line-height:1.4;min-height:64px}
 </section>
 <section>
   <h2>Примеры работ</h2>
-  <p class="hint">Первые три фото показываются на главном экране сайта.</p>
+  <p class="hint">Можно добавлять фото и видео до 2 минут. Большие видео админка сама сожмёт — это займёт столько же времени, сколько длится ролик. Первые три работы показываются на главном экране (у видео — его первый кадр).</p>
   <div class="ph" id="ph"></div>
 </section>
 </main>
@@ -109,7 +110,7 @@ function drawSvc(){
 }
 $('svc').addEventListener('input',function(e){var it=e.target.closest('.it');if(!it||!e.target.dataset.k)return;svc[+it.dataset.i][e.target.dataset.k]=e.target.value;mark()});
 $('svc').addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b)return;var i=+b.closest('.it').dataset.i;
-  if(b.dataset.a==='photo'){pick={svc:i};$('file').click();return}
+  if(b.dataset.a==='photo'){pick={svc:i};$('file').accept='image/*';$('file').click();return}
   if(b.dataset.a==='nophoto'){svc[i].photo='';drawSvc();mark();return}
   if(b.dataset.a==='del'){if(!confirm('Удалить услугу «'+(svc[i].name||'без названия')+'»?'))return;svc.splice(i,1);drawSvc();mark()}});
 $('svc').addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList.contains('pic'))e.target.click()});
@@ -117,13 +118,14 @@ $('about').addEventListener('input',mark);
 $('add').onclick=function(){svc.push({name:'',price:'',photo:'',desc:''});drawSvc();mark();$('svc').lastElementChild.querySelector('input').focus()};
 
 // ---- Примеры работ ----
+function isVid(p){return p&&typeof p==='object'&&p.video}
 function drawWorks(){
-  $('ph').innerHTML=works.map(function(p,i){return '<figure data-i="'+i+'"><img src="'+esc(src(p))+'" alt="Работа '+(i+1)+'">'+(i<3?'<span class="tag">Главный экран</span>':'')+'<button class="btn del" type="button">Удалить</button></figure>'}).join('')+
-    '<button class="addph" id="addph" type="button"><b>+</b>Добавить фото</button>';
+  $('ph').innerHTML=works.map(function(p,i){var v=isVid(p);return '<figure data-i="'+i+'"><img src="'+esc(src(v?p.poster:p))+'" alt="Работа '+(i+1)+'">'+(v?'<span class="vtag">▶ Видео</span>':'')+(i<3?'<span class="tag">Главный экран</span>':'')+'<button class="btn del" type="button">Удалить</button></figure>'}).join('')+
+    '<button class="addph" id="addph" type="button"><b>+</b>Добавить фото или видео</button>';
 }
 $('ph').addEventListener('click',function(e){
-  if(e.target.closest('#addph')){pick={works:true};$('file').multiple=true;$('file').click();return}
-  var b=e.target.closest('.del');if(!b)return;if(!confirm('Удалить это фото с сайта?'))return;
+  if(e.target.closest('#addph')){pick={works:true};$('file').accept='image/*,video/*';$('file').multiple=true;$('file').click();return}
+  var b=e.target.closest('.del');if(!b)return;if(!confirm('Удалить это с сайта?'))return;
   works.splice(+b.closest('figure').dataset.i,1);drawWorks();mark()});
 
 // ---- Выбор и сжатие фото ----
@@ -134,16 +136,63 @@ function shrink(file){return new Promise(function(res,rej){
   var img=new Image(),u=URL.createObjectURL(file);
   img.onload=function(){var a=variant(img,640),b=variant(img,1280);URL.revokeObjectURL(u);res({ext:a.ext,v640:a.d,v1280:b.ext===a.ext?b.d:variant(img,1280).d})};
   img.onerror=function(){rej()};img.src=u})}
+// ---- Видео ----
+// Короткие ролики MP4 до 20 МБ загружаем как есть. Остальные (большие, MOV с iPhone) пережимаем в браузере
+// до 1280 px и ~2,5 Мбит/с без звука: это занимает столько же времени, сколько длится видео.
+var MAX_SEC=120,KEEP_MB=20,MAX_MB=45;
+function loadVideo(file){return new Promise(function(res,rej){var v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=URL.createObjectURL(file);
+  v.onloadedmetadata=function(){res(v)};v.onerror=function(){rej(new Error('format'))}})}
+function seek(v,t){return new Promise(function(r){v.onseeked=function(){v.onseeked=null;r()};v.currentTime=t})}
+function poster(v){return seek(v,Math.min(.5,v.duration/2||0)).then(function(){var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);
+  return new Promise(function(r){var im=new Image();im.onload=function(){var a=variant(im,640),b=variant(im,1280);r({ext:a.ext,v640:a.d,v1280:b.ext===a.ext?b.d:variant(im,1280).d})};im.src=c.toDataURL('image/png')})})}
+function recMime(){var l=['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];for(var i=0;i<l.length;i++)if(window.MediaRecorder&&MediaRecorder.isTypeSupported(l[i]))return l[i];return ''}
+function recompress(v,onp){return new Promise(function(res,rej){
+  var mime=recMime();if(!mime||!HTMLCanvasElement.prototype.captureStream)return rej(new Error('norec'));
+  var k=Math.min(1,1280/Math.max(v.videoWidth,v.videoHeight)),c=document.createElement('canvas');c.width=Math.round(v.videoWidth*k/2)*2;c.height=Math.round(v.videoHeight*k/2)*2;var g=c.getContext('2d');
+  var rec=new MediaRecorder(c.captureStream(30),{mimeType:mime,videoBitsPerSecond:2500000}),chunks=[],done=false,timer;
+  rec.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data)};
+  rec.onstop=function(){clearInterval(timer);res({blob:new Blob(chunks,{type:mime.split(';')[0]}),ext:/mp4/.test(mime)?'mp4':'webm'})};
+  // Кадры рисуем и по сигналу видео, и по таймеру — так запись не встанет, если вкладка не в фокусе
+  function paint(){if(done)return;g.drawImage(v,0,0,c.width,c.height);onp(Math.min(1,v.currentTime/v.duration))}
+  function onFrame(){paint();if(!done&&v.requestVideoFrameCallback)v.requestVideoFrameCallback(onFrame)}
+  v.onended=function(){g.drawImage(v,0,0,c.width,c.height);done=true;setTimeout(function(){rec.stop()},300)};
+  seek(v,0).then(function(){rec.start(1000);var pr=v.play();if(pr&&pr.catch)pr.catch(rej);if(v.requestVideoFrameCallback)v.requestVideoFrameCallback(onFrame);timer=setInterval(paint,33);paint()});
+})}
+function prepVideo(file,label){
+  return loadVideo(file).then(function(v){
+    if(!v.videoWidth)throw new Error('format');
+    if(v.duration>MAX_SEC+0.5)throw new Error('long');
+    return poster(v).then(function(pst){
+      var asIs=/^video\/mp4$/.test(file.type)&&file.size<=KEEP_MB*1048576;
+      if(asIs)return {blob:file,ext:'mp4',poster:pst};
+      return recompress(v,function(p){st(label+': сжимаем видео '+Math.round(p*100)+'% — не закрывайте страницу')}).then(function(r){r.poster=pst;return r});
+    }).then(function(r){URL.revokeObjectURL(v.src);if(r.blob.size>MAX_MB*1048576)throw new Error('big');
+      if(r.blob.size<v.duration*8000)throw new Error('norec'); // почти пустой файл — запись не удалась
+      return r});
+  });
+}
+
 $('file').onchange=function(){
-  var files=[].slice.call(this.files).filter(function(f){return /^image\//.test(f.type)}),p=pick;this.value='';this.multiple=false;pick=null;
-  if(!files.length||!p)return;
-  st('Обрабатываем фото…');
-  Promise.all(files.map(shrink)).then(function(list){
+  var all=[].slice.call(this.files),p=pick;this.value='';this.multiple=false;pick=null;
+  var imgs=all.filter(function(f){return /^image\//.test(f.type)}),vids=p&&p.works?all.filter(function(f){return /^video\//.test(f.type)}):[];
+  if((!imgs.length&&!vids.length)||!p)return;
+  st('Обрабатываем…');
+  Promise.all(imgs.map(shrink)).then(function(list){
     list.forEach(function(data,k){var path='img/u'+Date.now()+'-'+k+'.'+data.ext;pending[path]=data;
       if(p.works)works.push(path);else if(k===0)svc[p.svc].photo=path});
-    drawSvc();drawWorks();mark();
-  }).catch(function(){st('Не удалось открыть фото. Попробуйте другое.','err')});
+    drawSvc();drawWorks();if(list.length)mark();
+    // видео по одному
+    return vids.reduce(function(q,file,k){return q.then(function(){
+      return prepVideo(file,'Видео '+(k+1)+' из '+vids.length).then(function(r){
+        var id='v'+Date.now()+'-'+k,pk='img/'+id+'.'+r.poster.ext,vk='video/'+id+'.'+r.ext;
+        pending[pk]=r.poster;pending[vk]={video:r.blob};works.push({video:vk,poster:pk});drawWorks();mark();
+      }).catch(function(e){var m={long:'длиннее 2 минут — обрежьте его в телефоне',big:'слишком большое даже после сжатия — обрежьте его',format:'в формате, который этот браузер не открывает — попробуйте в Chrome или Safari',norec:'не получилось сжать в этом браузере — попробуйте Chrome'}[e&&e.message]||'не получилось обработать';
+        st('Видео «'+file.name+'» '+m+'.','err');throw e});
+    })},Promise.resolve());
+  }).then(function(){if(vids.length)st('Видео готово. Нажмите «Сохранить изменения».','warn')})
+  .catch(function(e){if(!e||!e.message)st('Не удалось открыть файл. Попробуйте другой.','err')});
 };
+function blob64(b){return new Promise(function(r,j){var fr=new FileReader();fr.onload=function(){r(String(fr.result).split(',')[1])};fr.onerror=j;fr.readAsDataURL(b)})}
 
 // ---- Загрузка ----
 fetch('../config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){
@@ -166,12 +215,14 @@ $('save').onclick=function(){
   if(!ls('gh_token')||!OWNER){st('Сохранение не подключено. Попросите разработчика прислать ссылку для входа.','err');return}
   var clean=svc.map(function(s){return {name:s.name.trim(),price:s.price.trim(),photo:s.photo||'',desc:(s.desc||'').trim()}}).filter(function(s){return s.name});
   if(!clean.length){st('Добавьте хотя бы одну услугу.','err');return}
-  var used=works.concat(clean.map(function(s){return s.photo})).filter(function(p){return p&&pending[p]});
+  var keys=[];works.forEach(function(p){if(isVid(p)){keys.push(p.poster,p.video)}else keys.push(p)});clean.forEach(function(s){keys.push(s.photo)});
+  var used=keys.filter(function(p,i){return p&&pending[p]&&keys.indexOf(p)===i});
   var btn=$('save');btn.disabled=true;
-  var n=0;st(used.length?'Загружаем фото 0 из '+used.length+'…':'Сохраняем…');
+  var n=0;st(used.length?'Загружаем файлы 0 из '+used.length+'…':'Сохраняем…');
   used.reduce(function(p,path){return p.then(function(){var v=pending[path];
-    return put(opt(path,640),v.v640.split(',')[1],'Сайт: новое фото').then(function(){return put(opt(path,1280),v.v1280.split(',')[1],'Сайт: новое фото')})
-      .then(function(){delete pending[path];n++;st('Загружаем фото '+n+' из '+used.length+'…')})})},Promise.resolve())
+    var up=v.video?blob64(v.video).then(function(d){return put(path,d,'Сайт: новое видео')})
+      :put(opt(path,640),v.v640.split(',')[1],'Сайт: новое фото').then(function(){return put(opt(path,1280),v.v1280.split(',')[1],'Сайт: новое фото')});
+    return up.then(function(){delete pending[path];n++;st('Загружаем файлы '+n+' из '+used.length+'…')})})},Promise.resolve())
   .then(function(){cfg.services=clean;cfg.photos=works.slice();cfg.about=$('about').value.trim();st('Сохраняем…');return put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Сайт: услуги, цены и фото')})
   .then(function(){svc=clean;dirty=false;st('Сохранено. На сайте изменения появятся через 1–2 минуты.','ok')})
   .catch(function(e){st(e.code===401||e.code===403||e.code===404?'Доступ к сохранению устарел. Попросите разработчика прислать новую ссылку для входа.':'Не получилось сохранить. Проверьте интернет и попробуйте ещё раз.','err')})

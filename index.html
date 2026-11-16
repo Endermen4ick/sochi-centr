@@ -211,6 +211,7 @@ section{padding-block:clamp(80px,12vw,160px)}
 .sc-d{font-size:.92rem;line-height:1.5;color:var(--muted-d);white-space:pre-line;margin:2px 0 4px}
 .sc-go{margin-top:auto;padding-top:12px;font-weight:600;font-size:.92rem;color:var(--ember);text-decoration:none}
 .sc-go::after{content:" →"}
+.gal figure video{width:100%;height:100%;object-fit:cover;display:block;background:var(--card)}
 .works-h{padding-bottom:28px}
 .works-h h2{margin-bottom:0}
 .ok{grid-column:1/-1;color:var(--gold);font-size:.95rem;min-height:1.4em}
@@ -434,20 +435,35 @@ function opt(p,w){var m=String(p).match(/^(.*?)([^\/]+?)(\.\w+)?$/);return m[1]+
 function srcset(p){return opt(p,640)+' 640w, '+opt(p,1280)+' 1280w'}
 // Меняем картинку, только если фото другое — иначе браузер начал бы качать его заново
 function setImg(img,p,sizes){if(!p||img.dataset.p===p)return;img.dataset.p=p;img.sizes=sizes;img.srcset=srcset(p);img.src=opt(p,1280)}
+// Видео в «Примерах работ»: элемент {video:'video/NAME.mp4', poster:'img/NAME.webp'}
+function isVid(p){return p&&typeof p==='object'&&p.video}
+// Видео грузится и играет только когда видно на экране, иначе на паузе — не тратим трафик
+var vio='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}else v.pause()})},{rootMargin:'200px 0px'}):null;
+function watchVid(v){if(vio)vio.observe(v);else{v.preload='metadata';v.controls=true}}
 function photos(list){
   if(!list||!list.length)return;
   var alt_=document.querySelector('.brand');var nm=alt_?alt_.textContent:'';
   // Карточки на первом экране: первые три фото
-  all('.stack .card img').forEach(function(img,i){if(list[i])setImg(img,list[i],'(min-width:900px) 300px, 56vw')});
+  // Для первого экрана и фона берём картинки; у видео — его обложку
+  var stills=list.map(function(p){return isVid(p)?p.poster:p}).filter(Boolean);
+  all('.stack .card img').forEach(function(img,i){if(stills[i])setImg(img,stills[i],'(min-width:900px) 300px, 56vw')});
   // Фон финального блока: второе фото (или первое)
-  var fi=document.querySelector('#finalimg img');if(fi)setImg(fi,list[1]||list[0],'100vw');
-  // Галерея: все фото по порядку
+  var fi=document.querySelector('#finalimg img');if(fi)setImg(fi,stills[1]||stills[0],'100vw');
+  // Галерея: все фото и видео по порядку
   var rail=document.getElementById('rail');if(!rail)return;
   var figs=all('#rail figure');
   list.forEach(function(p,i){
-    var fig=figs[i];
-    if(!fig){fig=document.createElement('figure');fig.className='clip';fig.innerHTML='<img loading="lazy" decoding="async" alt="">';rail.appendChild(fig)}
-    var im=fig.querySelector('img');setImg(im,p,'(min-width:700px) 620px, 82vw');im.alt=nm+', фото '+(i+1);
+    var fig=figs[i],vid=isVid(p),key=vid?p.video:p;
+    if(fig&&fig.dataset.k===key)return;
+    if(!fig){fig=document.createElement('figure');fig.className='clip';rail.appendChild(fig)}
+    fig.dataset.k=key;
+    if(vid){
+      fig.innerHTML='<video muted loop playsinline preload="none" aria-label="'+esc(nm+', видео '+(i+1))+'"></video>';
+      var v=fig.querySelector('video');v.poster=opt(p.poster,1280);v.src=p.video;watchVid(v);
+    }else{
+      var im=fig.querySelector('img');if(!im){fig.innerHTML='<img loading="lazy" decoding="async" alt="">';im=fig.querySelector('img')}
+      setImg(im,p,'(min-width:700px) 620px, 82vw');im.alt=nm+', фото '+(i+1);
+    }
   });
   figs.slice(list.length).forEach(function(x){x.remove()});
   if(window.ScrollTrigger)setTimeout(function(){ScrollTrigger.refresh()},300);
