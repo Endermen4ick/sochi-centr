@@ -206,9 +206,11 @@ function keyError(code){
 function checkKey(){
   var t=ls('gh_token');if(!t)return;
   if(!/^(github_pat_|ghp_)\w+$/.test(t)){st('В ссылке для входа нет настоящего ключа. Попросите разработчика прислать ссылку с ключом.','err');return}
-  fetch('https://api.github.com/repos/'+OWNER+'/'+REPO,{cache:'no-store',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'}})
-    .then(function(x){if(!x.ok){st(keyError(x.status)||'Не удалось проверить ключ. Проверьте интернет.','err');return}
-      return x.json().then(function(j){if(!j.permissions||!j.permissions.push)st(keyError(403),'err');else if(!dirty)st('Сохранение подключено','ok')})})
+  // Пробная запись с заведомо неверной версией файла: при праве на запись GitHub ответит 409/422
+  // (конфликт версии) и ничего не изменит, без права — 403, при чужом ключе — 401/404
+  fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/config.json',{method:'PUT',cache:'no-store',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'},
+    body:JSON.stringify({message:'check',content:'',sha:'0000000000000000000000000000000000000000'})})
+    .then(function(x){if(x.status===409||x.status===422){if(!dirty)st('Сохранение подключено','ok')}else st(keyError(x.status)||'Не удалось проверить ключ. Проверьте интернет.','err')})
     .catch(function(){});
 }
 checkKey();
