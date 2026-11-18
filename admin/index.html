@@ -97,7 +97,8 @@ function mark(){dirty=true;st('Есть несохранённые измене�
 var h=location.hash.match(/key=([^&]+)/);
 if(h){ls('gh_token',decodeURIComponent(h[1]));history.replaceState(null,'',location.pathname)}
 var host=location.hostname.match(/^([^.]+)\.github\.io$/i),seg=location.pathname.split('/').filter(Boolean);
-var OWNER=host?host[1]:'',REPO=host?(seg[0]&&seg[0]!=='admin'?seg[0]:host[1]+'.github.io'):'';
+// На своём домене адрес не подсказывает репозиторий — по умолчанию Endermen4ick/sochi-centr
+var OWNER=host?host[1]:'Endermen4ick',REPO=host?(seg[0]&&seg[0]!=='admin'?seg[0]:host[1]+'.github.io'):'sochi-centr';
 
 // ---- Услуги ----
 function drawSvc(){
