@@ -195,6 +195,24 @@ $('file').onchange=function(){
 };
 function blob64(b){return new Promise(function(r,j){var fr=new FileReader();fr.onload=function(){r(String(fr.result).split(',')[1])};fr.onerror=j;fr.readAsDataURL(b)})}
 
+// ---- Проверка ключа сохранения ----
+// Точная причина вместо общего «устарел» — чтобы было понятно, что исправить
+function keyError(code){
+  if(code===401)return 'Ключ для сохранения не подходит (неверный или удалён). Попросите разработчика прислать новую ссылку для входа.';
+  if(code===403)return 'У ключа нет права на изменения. Разработчику: в токене нужно право Contents: Read and write.';
+  if(code===404)return 'У ключа нет доступа к сайту. Разработчику: в токене нужен доступ к репозиторию sochi-centr.';
+  return '';
+}
+function checkKey(){
+  var t=ls('gh_token');if(!t)return;
+  if(!/^(github_pat_|ghp_)\w+$/.test(t)){st('В ссылке для входа нет настоящего ключа. Попросите разработчика прислать ссылку с ключом.','err');return}
+  fetch('https://api.github.com/repos/'+OWNER+'/'+REPO,{cache:'no-store',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github+json'}})
+    .then(function(x){if(!x.ok){st(keyError(x.status)||'Не удалось проверить ключ. Проверьте интернет.','err');return}
+      return x.json().then(function(j){if(!j.permissions||!j.permissions.push)st(keyError(403),'err');else if(!dirty)st('Сохранение подключено','ok')})})
+    .catch(function(){});
+}
+checkKey();
+
 // ---- Загрузка ----
 fetch('../config.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){
   cfg=c||{};
@@ -226,7 +244,7 @@ $('save').onclick=function(){
     return up.then(function(){delete pending[path];n++;st('Загружаем файлы '+n+' из '+used.length+'…')})})},Promise.resolve())
   .then(function(){cfg.services=clean;cfg.photos=works.slice();cfg.about=$('about').value.trim();st('Сохраняем…');return put('config.json',b64(JSON.stringify(cfg,null,2)+'\n'),'Сайт: услуги, цены и фото')})
   .then(function(){svc=clean;dirty=false;st('Сохранено. На сайте изменения появятся через 1–2 минуты.','ok')})
-  .catch(function(e){st(e.code===401||e.code===403||e.code===404?'Доступ к сохранению устарел. Попросите разработчика прислать новую ссылку для входа.':'Не получилось сохранить. Проверьте интернет и попробуйте ещё раз.','err')})
+  .catch(function(e){st(keyError(e.code)||'Не получилось сохранить. Проверьте интернет и попробуйте ещё раз.','err')})
   .then(function(){btn.disabled=false});
 };
 addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue=''}});
